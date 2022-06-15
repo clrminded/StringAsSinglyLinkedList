@@ -1,6 +1,11 @@
 # Prerequisites
 *.d
 
+# Debugging outputs
+*.ilk
+*.pdb
+
+
 # Compiled Object files
 *.slo
 *.lo
@@ -30,3 +35,6 @@
 *.exe
 *.out
 *.app
+
+# VSCode settings
+.vscode/

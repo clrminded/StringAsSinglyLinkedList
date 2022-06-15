@@ -1,7 +1,7 @@
 /**
  * @file SLLString.cpp
  * @author Christopher Liudahl-Rackley
- * @brief This is a program that implements a C-style string as a 
+ * @brief This is a program that implements a C-style string as a
  * linked list as opposed to the conventional array based cstyle string
  * @date 2021-10-25
  */
@@ -9,22 +9,19 @@
 #include <iostream>
 #include "SLLString.h"
 
-
-Node *SLLString::newList(char c)
-{
-    Node *list = new Node(c, nullptr);
-    return list;
-}
-
 // default constructor
 SLLString::SLLString() : head(newList('\0')) {}
 
 //@params: other, which is a c++ string
 SLLString::SLLString(const std::string &other)
 {
+    // The head of a linked list will start out as an empty node
     head = new Node('\0', nullptr);
-    Node *first = head->next; // use this pointer to modify without loosing the link of the original
+    // create a variable called first and use this pointer to modify without loosing the link of the original
+    Node *first = head->next;
+    // create a new node with the data value of the 0th index of constructed string.
     first = new Node(other.at(0), nullptr);
+    // The newly created node is where the head-> points to
     head->next = first;
 
     // create a new node for each character that is used as input
@@ -35,7 +32,7 @@ SLLString::SLLString(const std::string &other)
     }
 }
 
-//copy constructor
+// copy constructor
 SLLString::SLLString(const SLLString &other)
 {
     // create a new node and will dereference the value of the instance and assigning it to the new node, I believe this is to do the deepcopy.
@@ -52,7 +49,7 @@ SLLString::SLLString(const SLLString &other)
 SLLString::~SLLString()
 {
     Node *p = this->head->next;
-    //goes through the list one by one and deletes the nodes
+    // goes through the list one by one and deletes the nodes
     while (p->next != nullptr)
     {
         if (p->next->next == nullptr)
@@ -71,7 +68,7 @@ SLLString::~SLLString()
     delete p;
     delete head;
 }
-//assignment operator
+// assignment operator
 SLLString &SLLString::operator=(const SLLString &other)
 {
     if (this != &other)
@@ -91,11 +88,22 @@ SLLString &SLLString::operator=(const SLLString &other)
     }
     return *this;
 }
+
+/**
+ * When we instantiate a new List we will create a new node and return that as the start
+ * of a new list. should be a null.
+ */
+Node *SLLString::newList(char c)
+{
+    Node *list = new Node(c, nullptr);
+    return list;
+}
+
 int SLLString::length() const
 {
     int strLength = 0;
     Node *currentFirst = this->head->next;
-    //add to strLength variable, then return at end
+    // add to strLength variable, then return at end
     while (currentFirst != nullptr)
     {
         strLength++;
@@ -104,7 +112,7 @@ int SLLString::length() const
     return strLength;
 }
 
-//modifying object, thus calls destructor
+// modifying object, thus calls destructor
 SLLString &SLLString::operator+=(const SLLString &other)
 {
     // set a pointer at beginning as to not loose the connection of the links. Iterate through string, brings current to end of "this"instances string.
@@ -124,7 +132,7 @@ SLLString &SLLString::operator+=(const SLLString &other)
     return *this;
 }
 
-//find the character at index n
+// find the character at index n
 char &SLLString::operator[](const int n) const
 {
     Node *current = head->next;
@@ -135,11 +143,11 @@ char &SLLString::operator[](const int n) const
 
 int SLLString::findSubstring(std::string str)
 {
-    //if input is c++ string, put str as parameter of SLLstr object.
+    // if input is c++ string, put str as parameter of SLLstr object.
     return findSubstringHelper(SLLString(str));
 }
 
-//find substring within the string
+// find substring within the string
 int SLLString::findSubstringHelper(const SLLString &substring)
 {
     Node *current = this->head->next;
@@ -162,7 +170,6 @@ int SLLString::findSubstringHelper(const SLLString &substring)
                     break;
                 temp = temp->next;
             }
-        
         }
         index++;
         current = current->next;
@@ -173,15 +180,15 @@ int SLLString::findSubstringHelper(const SLLString &substring)
 void SLLString::erase(char c)
 {
     Node *current = this->head->next;
-    Node *previous; //tracker pointer to modify while iterating
+    Node *previous; // tracker pointer to modify while iterating
     while (current->next != nullptr)
     {
         if (current->next->character == c)
         {
-            previous = current;          //save point for current
-            Node *match = current->next; //Node match to save match point
+            previous = current;          // save point for current
+            Node *match = current->next; // Node match to save match point
             previous->next = match->next;
-            delete match; //deleting matching node
+            delete match; // deleting matching node
             // last element deleted, then break from the loop
             if (previous->next == nullptr)
                 break;
